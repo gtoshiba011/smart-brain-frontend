@@ -28,7 +28,7 @@ class App extends Component {
   state = {
     input: "",
     imageUrl: "",
-    box: {},
+    boxs: [],
   };
 
   inputChangeHandler = (event) => {
@@ -44,22 +44,24 @@ class App extends Component {
   };
 
   calculateFaceLocation = (data) => {
-    const clarifaiFace =
-      data.outputs[0].data.regions[0].region_info.bounding_box;
+    const clarifaiFaces = data.outputs[0].data.regions;
     const image = document.getElementById("inputImage");
     const width = Number(image.width);
     const height = Number(image.height);
-    return {
-      leftCol: clarifaiFace.left_col * width,
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - clarifaiFace.right_col * width,
-      bottomRow: height - clarifaiFace.bottom_row * height,
-    };
+    return clarifaiFaces.map((originData, index) => {
+      const clarifaiFace = originData.region_info.bounding_box;
+      return {
+        index: index,
+        leftCol: clarifaiFace.left_col * width,
+        topRow: clarifaiFace.top_row * height,
+        rightCol: width - clarifaiFace.right_col * width,
+        bottomRow: height - clarifaiFace.bottom_row * height,
+      };
+    });
   };
 
-  displayFaceBox = (box) => {
-    this.setState({ box: box });
-    console.log(box);
+  displayFaceBox = (boxs) => {
+    this.setState({ boxs: boxs });
   };
 
   render() {
@@ -74,7 +76,10 @@ class App extends Component {
           onInputChange={this.inputChangeHandler}
           onButtonSubmit={this.buttonSubmitHandler}
         />
-        <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
+        <FaceRecognition
+          boxs={this.state.boxs}
+          imageUrl={this.state.imageUrl}
+        />
       </div>
     );
   }
