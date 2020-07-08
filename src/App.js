@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation/Navigation";
 import Logo from "./components/Logo/Logo";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
+import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 
 const particlesOptions = {
   particles: {
@@ -26,6 +27,8 @@ const app = new Clarifai.App({
 class App extends Component {
   state = {
     input: "",
+    imageUrl: "",
+    box: {},
   };
 
   inputChangeHandler = (event) => {
@@ -33,13 +36,30 @@ class App extends Component {
   };
 
   buttonSubmitHandler = () => {
+    this.setState({ imageUrl: this.state.input });
     app.models
-      .predict(
-        "a403429f2ddf4b49b307e318f00e528b",
-        "https://www.thestatesman.com/wp-content/uploads/2017/08/1493458748-beauty-face-517.jpg"
-      )
-      .then((res) => console.log(res.outputs))
+      .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+      .then((res) => this.displayFaceBox(this.calculateFaceLocation(res)))
       .catch((err) => console.log(err));
+  };
+
+  calculateFaceLocation = (data) => {
+    const clarifaiFace =
+      data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById("inputImage");
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - clarifaiFace.right_col * width,
+      bottomRow: height - clarifaiFace.bottom_row * height,
+    };
+  };
+
+  displayFaceBox = (box) => {
+    this.setState({ box: box });
+    console.log(box);
   };
 
   render() {
@@ -54,7 +74,7 @@ class App extends Component {
           onInputChange={this.inputChangeHandler}
           onButtonSubmit={this.buttonSubmitHandler}
         />
-        {/* <FaceRecognition /> */}
+        <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
       </div>
     );
   }
