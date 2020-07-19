@@ -33,10 +33,16 @@ class App extends Component {
     boxs: [],
     route: "signin",
     isSignedIn: false,
+    user: {
+      id: "",
+      name: "",
+      email: "",
+      entries: 0,
+      joined: "",
+    },
   };
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   inputChangeHandler = (event) => {
     this.setState({ input: event.target.value });
@@ -80,6 +86,18 @@ class App extends Component {
     this.setState({ route: route });
   };
 
+  updateUserHandler = (user) => {
+    this.setState({
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        entries: user.entries,
+        joined: user.joined,
+      },
+    });
+  };
+
   render() {
     const { isSignedIn, route, input, boxs, imageUrl } = this.state;
     return (
@@ -103,7 +121,10 @@ class App extends Component {
         ) : route === "signin" ? (
           <Signin onRouteChange={this.routeChangeHandler} />
         ) : (
-          <Register onRouteChange={this.routeChangeHandler} />
+          <Register
+            onRouteChange={this.routeChangeHandler}
+            onUpdateUser={this.updateUserHandler}
+          />
         )}
       </div>
     );
