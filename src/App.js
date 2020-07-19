@@ -89,8 +89,8 @@ class App extends Component {
     const image = document.getElementById("inputImage");
     const width = Number(image.width);
     const height = Number(image.height);
-    return clarifaiFaces.map((originData, index) => {
-      const clarifaiFace = originData.region_info.bounding_box;
+    return clarifaiFaces.map((face, index) => {
+      const clarifaiFace = face.region_info.bounding_box;
       return {
         index: index,
         leftCol: clarifaiFace.left_col * width,
@@ -101,8 +101,8 @@ class App extends Component {
     });
   };
 
-  displayFaceBox = (boxs) => {
-    this.setState({ boxs: boxs });
+  displayFaceBox = (boxes) => {
+    this.setState({ boxes: boxes });
   };
 
   routeChangeHandler = (route) => {
