@@ -28,9 +28,11 @@ class Register extends Component {
     })
       .then((res) => res.json())
       .then((user) => {
-        if (user) {
+        if (user.id) {
           this.props.onUpdateUser(user);
           this.props.onRouteChange("home");
+        } else {
+          console.log("register error");
         }
       })
       .catch(console.log);
