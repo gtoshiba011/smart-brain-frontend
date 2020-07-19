@@ -35,6 +35,9 @@ class App extends Component {
     isSignedIn: false,
   };
 
+  componentDidMount() {
+  }
+
   inputChangeHandler = (event) => {
     this.setState({ input: event.target.value });
   };
