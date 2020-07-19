@@ -30,7 +30,7 @@ class Signin extends Component {
           console.log("signin error");
         }
       })
-      .catch((err) => console.log(err));
+      .catch(console.log);
   };
 
   render() {
