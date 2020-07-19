@@ -26,6 +26,8 @@ class Signin extends Component {
         if (user.id) {
           this.props.onUpdateUser(user);
           this.props.onRouteChange("home");
+        } else {
+          console.log("signin error");
         }
       })
       .catch((err) => console.log(err));

@@ -26,6 +26,22 @@ const app = new Clarifai.App({
   apiKey: "923bdb65ba984677ac69f43368456e4f",
 });
 
+const initialState = {
+  input: "",
+  imageUrl: "",
+  boxs: [],
+  route: "signin",
+  isSignedIn: false,
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    entries: 0,
+    joined: "",
+  },
+};
+// route state: home, signin, signout, register
+
 class App extends Component {
   state = {
     input: "",
@@ -92,8 +108,8 @@ class App extends Component {
   routeChangeHandler = (route) => {
     if (route === "home") {
       this.setState({ isSignedIn: true });
-    } else {
-      this.setState({ isSignedIn: false });
+    } else if (route === "signout") {
+      this.setState(initialState);
     }
     this.setState({ route: route });
   };
@@ -133,7 +149,7 @@ class App extends Component {
             />
             <FaceRecognition boxs={boxs} imageUrl={imageUrl} />{" "}
           </div>
-        ) : route === "signin" ? (
+        ) : route === "signin" || route === "signout" ? (
           <Signin
             onRouteChange={this.routeChangeHandler}
             onUpdateUser={this.updateUserHandler}
