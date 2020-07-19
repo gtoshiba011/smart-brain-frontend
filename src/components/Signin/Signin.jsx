@@ -5,7 +5,7 @@ class Signin extends Component {
     signInEmail: "",
     signInPassword: "",
   };
-  
+
   emailChangeHandler = (event) => {
     this.setState({ signInEmail: event.target.value });
   };
@@ -22,8 +22,9 @@ class Signin extends Component {
       }),
     })
       .then((res) => res.json())
-      .then((data) => {
-        if (data === "success") {
+      .then((user) => {
+        if (user.id) {
+          this.props.onUpdateUser(user);
           this.props.onRouteChange("home");
         }
       })
