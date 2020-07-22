@@ -50,7 +50,7 @@ class Register extends Component {
                   Name
                 </label>
                 <input
-                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  className="hover-black pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="text"
                   name="name"
                   id="name"
@@ -62,7 +62,7 @@ class Register extends Component {
                   Email
                 </label>
                 <input
-                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  className="hover-black pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="email"
                   name="email-address"
                   id="email-address"
@@ -74,7 +74,7 @@ class Register extends Component {
                   Password
                 </label>
                 <input
-                  className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
+                  className="hover-black pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="password"
                   name="password"
                   id="password"
