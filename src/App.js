@@ -27,8 +27,8 @@ const initialState = {
   input: "",
   imageUrl: "",
   boxs: [],
-  route: "signin",
-  isSignedIn: false,
+  route: "home",
+  isSignedIn: true,
   isProfileOpen: false,
   user: {
     id: "",
@@ -36,26 +36,14 @@ const initialState = {
     email: "",
     entries: 0,
     joined: "",
+    pet: "",
+    age: "",
   },
 };
 // route state: home, signin, signout, register
 
 class App extends Component {
-  state = {
-    input: "",
-    imageUrl: "",
-    boxs: [],
-    route: "home",
-    isSignedIn: true,
-    isProfileOpen: false,
-    user: {
-      id: "",
-      name: "",
-      email: "",
-      entries: 0,
-      joined: "",
-    },
-  };
+  state = initialState;
 
   componentDidMount() {}
 
@@ -131,7 +119,10 @@ class App extends Component {
   };
 
   toggleModal = () => {
-    this.setState((prevState) => ({ isProfileOpen: !prevState.isProfileOpen }));
+    this.setState((prevState) => ({
+      ...prevState,
+      isProfileOpen: !prevState.isProfileOpen,
+    }));
   };
 
   render() {
@@ -142,6 +133,7 @@ class App extends Component {
       boxs,
       imageUrl,
       isProfileOpen,
+      user,
     } = this.state;
     return (
       <div className="App">
@@ -153,7 +145,11 @@ class App extends Component {
         />
         {isProfileOpen && (
           <Modal>
-            <Profile toggleModal={this.toggleModal} />
+            <Profile
+              isProfileOpen={isProfileOpen}
+              toggleModal={this.toggleModal}
+              user={user}
+            />
           </Modal>
         )}
         {route === "home" ? (
