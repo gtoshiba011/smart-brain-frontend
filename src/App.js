@@ -114,6 +114,8 @@ class App extends Component {
         email: user.email,
         entries: user.entries,
         joined: user.joined,
+        age: user.age,
+        pet: user.pet,
       },
     });
   };
@@ -146,8 +148,8 @@ class App extends Component {
         {isProfileOpen && (
           <Modal>
             <Profile
-              isProfileOpen={isProfileOpen}
               toggleModal={this.toggleModal}
+              loadUser={this.updateUserHandler}
               user={user}
             />
           </Modal>
