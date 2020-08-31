@@ -45,7 +45,25 @@ const initialState = {
 class App extends Component {
   state = initialState;
 
-  componentDidMount() {}
+  componentDidMount() {
+    const smartBrainToken = window.sessionStorage.getItem("authToken");
+    if (smartBrainToken) {
+      fetch("http://localhost:3000/signin", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          smartBrainToken,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.userId) {
+            console.log("success; TODO: get user profile");
+          }
+        })
+        .catch(console.log);
+    }
+  }
 
   inputChangeHandler = (event) => {
     this.setState({ input: event.target.value });

@@ -9,9 +9,15 @@ class Signin extends Component {
   emailChangeHandler = (event) => {
     this.setState({ signInEmail: event.target.value });
   };
+
   passwordChangeHandler = (event) => {
     this.setState({ signInPassword: event.target.value });
   };
+  
+  saveAuthTokenInSession = (authToken) => {
+    window.sessionStorage.setItem("authToken", authToken);
+  };
+
   submitSigninHandler = () => {
     fetch("http://localhost:3000/signin", {
       method: "post",
@@ -22,9 +28,10 @@ class Signin extends Component {
       }),
     })
       .then((res) => res.json())
-      .then((user) => {
-        if (user.id) {
-          this.props.onUpdateUser(user);
+      .then((data) => {
+        if (data.userId && data.success === "true") {
+          this.saveAuthTokenInSession(data.token);
+          this.props.onUpdateUser(data);
           this.props.onRouteChange("home");
         } else {
           console.log("signin error");
