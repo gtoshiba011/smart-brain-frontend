@@ -13,7 +13,7 @@ class Signin extends Component {
   passwordChangeHandler = (event) => {
     this.setState({ signInPassword: event.target.value });
   };
-  
+
   saveAuthTokenInSession = (authToken) => {
     window.sessionStorage.setItem("authToken", authToken);
   };
@@ -31,8 +31,20 @@ class Signin extends Component {
       .then((data) => {
         if (data.userId && data.success === "true") {
           this.saveAuthTokenInSession(data.token);
-          this.props.onUpdateUser(data);
-          this.props.onRouteChange("home");
+          fetch(`http://localhost:3000/profile/${data.userId}`, {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json",
+              "authentication": data.token,
+            },
+          })
+            .then((res) => res.json())
+            .then((user) => {
+              if (user && user.email) {
+                this.props.onUpdateUser(user);
+                this.props.onRouteChange("home");
+              }
+            });
         } else {
           console.log("signin error");
         }

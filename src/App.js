@@ -46,19 +46,32 @@ class App extends Component {
   state = initialState;
 
   componentDidMount() {
-    const smartBrainToken = window.sessionStorage.getItem("authToken");
-    if (smartBrainToken) {
+    const authToken = window.sessionStorage.getItem("authToken");
+    if (authToken) {
       fetch("http://localhost:3000/signin", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
-          smartBrainToken,
+          "authentication": authToken,
         },
       })
         .then((res) => res.json())
         .then((data) => {
           if (data && data.userId) {
-            console.log("success; TODO: get user profile");
+            fetch(`http://localhost:3000/profile/${data.userId}`, {
+              method: "get",
+              headers: {
+                "Content-Type": "application/json",
+                "authentication": authToken,
+              },
+            })
+              .then((res) => res.json())
+              .then((user) => {
+                if (user && user.email) {
+                  this.updateUserHandler(user);
+                  this.routeChangeHandler("home");
+                }
+              });
           }
         })
         .catch(console.log);
