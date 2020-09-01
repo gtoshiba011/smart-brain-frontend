@@ -86,7 +86,10 @@ class App extends Component {
     this.setState({ imageUrl: this.state.input });
     fetch("http://localhost:3000/imageApi", {
       method: "post",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "authentication": window.sessionStorage.getItem("authToken")
+     },
       body: JSON.stringify({ input: this.state.input }),
     })
       .then((res) => res.json())
@@ -94,7 +97,10 @@ class App extends Component {
         // update the entries
         fetch("http://localhost:3000/image", {
           method: "put",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "authentication": window.sessionStorage.getItem("authToken")
+        },
           body: JSON.stringify({ id: this.state.user.id }),
         })
           .then((res) => res.json())
@@ -108,24 +114,29 @@ class App extends Component {
   };
 
   calculateFaceLocation = (data) => {
-    const clarifaiFaces = data.outputs[0].data.regions;
-    const image = document.getElementById("inputImage");
-    const width = Number(image.width);
-    const height = Number(image.height);
-    return clarifaiFaces.map((face, index) => {
-      const clarifaiFace = face.region_info.bounding_box;
-      return {
-        index: index,
-        leftCol: clarifaiFace.left_col * width,
-        topRow: clarifaiFace.top_row * height,
-        rightCol: width - clarifaiFace.right_col * width,
-        bottomRow: height - clarifaiFace.bottom_row * height,
-      };
-    });
+    if (data && data.outputs) {
+      const clarifaiFaces = data.outputs[0].data.regions;
+      const image = document.getElementById("inputImage");
+      const width = Number(image.width);
+      const height = Number(image.height);
+      return clarifaiFaces.map((face, index) => {
+        const clarifaiFace = face.region_info.bounding_box;
+        return {
+          index: index,
+          leftCol: clarifaiFace.left_col * width,
+          topRow: clarifaiFace.top_row * height,
+          rightCol: width - clarifaiFace.right_col * width,
+          bottomRow: height - clarifaiFace.bottom_row * height,
+        };
+      });
+    }
+    return;
   };
 
   displayFaceBox = (boxes) => {
-    this.setState({ boxes: boxes });
+    if (boxes) {
+      this.setState({ boxes: boxes });
+    }
   };
 
   routeChangeHandler = (route) => {
