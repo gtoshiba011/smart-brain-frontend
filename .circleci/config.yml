@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
@@ -22,12 +22,12 @@ jobs:
     steps:
       - checkout
       - run: echo "hello!"
-workflows:
-  version: 2
-  build_test_and_lint:
-    jobs:
-      - build
-      - hithere
-      - test:
-        requires:
-          - hithere
+# workflows:
+#   version: 2.1
+#   build_test_and_lint:
+#     jobs:
+#       - build
+#       - hithere
+#       - test:
+#         requires:
+#           - hithere
