@@ -22,7 +22,6 @@ jobs:
     steps:
       - checkout
       - run: echo "hello!"
-
 workflows:
   version: 2
   build_test_and_lint:
