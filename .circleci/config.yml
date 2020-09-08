@@ -28,3 +28,6 @@ workflows:
     jobs:
       - build
       - hithere
+      - test:
+        requires:
+          - hithere
